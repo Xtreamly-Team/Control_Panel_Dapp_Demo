@@ -83,6 +83,18 @@ export const sendNotification = async () => {
   console.log(res);
 };
 
+export const callSnapConnectToSteam = async () => {
+  console.log('Calling connect to steam snap');
+  const res =await window.ethereum.request({
+    method: 'wallet_invokeSnap',
+    params: {
+      snapId: defaultSnapOrigin,
+      request: { method: 'steam' },
+    },
+  });
+  console.log(res);
+};
+
 export const sendNotificationRemote = async () => {
   console.log('Going to invoke notif on snap!!');
   await window.ethereum.request({

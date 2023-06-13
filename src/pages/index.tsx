@@ -17,6 +17,7 @@ import {
   SaveDataButton,
   LoadDataButton,
 } from '../components';
+import {callSnapConnectToSteam} from '../utils/snap';
 
 const Container = styled.div`
   display: flex;
@@ -138,6 +139,15 @@ const Index = () => {
     }
   };
 
+  const handleConnectToSteam = async () => {
+    try {
+      await callSnapConnectToSteam();
+    } catch (e) {
+      console.error(e);
+      dispatch({ type: MetamaskActions.SetError, payload: e });
+    }
+  };
+
   const handleSaveDataScenario = async () => {
     try {
       await sendNotificationRemote();
@@ -212,6 +222,25 @@ const Index = () => {
             button: (
               <LoadDataButton
                 onClick={handleSendNotificationClick}
+                disabled={!state.installedSnap}
+              />
+            ),
+          }}
+          disabled={!state.installedSnap}
+          fullWidth={
+            state.isFlask &&
+            Boolean(state.installedSnap) &&
+            !shouldDisplayReconnectButton(state.installedSnap)
+          }
+        />
+        <Card
+          content={{
+            title: 'Connect to Steam',
+            description:
+              'Connect to Steam to get game information',
+            button: (
+              <LoadDataButton
+                onClick={handleConnectToSteam}
                 disabled={!state.installedSnap}
               />
             ),
